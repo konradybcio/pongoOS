@@ -169,11 +169,21 @@ _exception_vector_el3:
 .balign 128
     b .
 .balign 128
-    /* Lower EL with Aarch64 */
-    mov x18, #0xc
+	ldr x25, =0x87d2e2000   // Framebuffer address
+	mov x26, #0x200000      // Count
+	ldr w27, =0xffdb134b    // Color
+    1:
+        str w27, [x25], #4
+        subs x26, x26, #4
+        bne 1b
+    2:
+    wfi
+    b 2b                    // Loop indefinitely
+
+    mov x18, #0xd           // 0b1101: EL3h
     msr spsr_el3, x18
     eret
-
+    
 .balign 128
     b .
 .balign 128
