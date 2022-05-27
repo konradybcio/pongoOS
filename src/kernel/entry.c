@@ -305,7 +305,6 @@ void pongo_entry(uint64_t *kernel_args, void *entryp, void (*exit_to_el1_image)(
 
         "msr DAIF, xzr\n"
     );
-    fix_a7();
     buf = lowlevel_setup(gBootArgs->physBase & 0xFFFFFFFF, gBootArgs->memSize);
     rebase_pc(gPongoSlide);
     extern void set_exception_stack_core0();
@@ -317,6 +316,7 @@ void pongo_entry(uint64_t *kernel_args, void *entryp, void (*exit_to_el1_image)(
     set_exception_stack_core0();
     gFramebuffer = (uint32_t*)gBootArgs->Video.v_baseAddr;
     lowlevel_cleanup();
+    fix_a7();
     if(gBootFlag == BOOT_FLAG_RAW)
     {
         jump_to_image_extended(((uint64_t)loader_xfer_recv_data) - kCacheableView + 0x800000000, (uint64_t)gBootArgs, (uint64_t)gEntryPoint);
