@@ -315,15 +315,15 @@ unsigned long long lowlevel_setup(uint64_t phys_off, uint64_t phys_size)
     map_range_noflush_rw(0x200000000, 0x200000000, 0x100000000, 2, 0, false);
     phys_off += (pgsz-1);
     phys_off &= ~(pgsz-1);
-    map_range_noflush_rw(kCacheableView + phys_off, 0x800000000 + phys_off, phys_size, 3, 1, false);
+    map_range_noflush_rwx(kCacheableView + phys_off, 0x800000000 + phys_off, phys_size, 3, 1, false);
     map_range_noflush_rwx(0x800000000ULL + phys_off, 0x800000000 + phys_off, phys_size, 2, 0, false);
     // TLB flush is done by enable_mmu_el1
 
     if (!early_heap_base) {
         early_heap_base = (pongo_base - 0x800000000 + kCacheableView + pongo_size + 0x7fff) & ~0x3fff;
     }
-    map_range_noflush_rx(0x100000000ULL, pongo_base, pongo_text_size, 3, 1, false);
-    map_range_noflush_rw(0x100000000ULL + pongo_text_size, pongo_base + pongo_text_size, (pongo_size - pongo_text_size + 0x3fff) & ~0x3fff, 3, 1, false);
+    map_range_noflush_rwx(0x100000000ULL, pongo_base, pongo_text_size, 3, 1, false);
+    map_range_noflush_rwx(0x100000000ULL + pongo_text_size, pongo_base + pongo_text_size, (pongo_size - pongo_text_size + 0x3fff) & ~0x3fff, 3, 1, false);
     gPongoSlide = 0x100000000ULL - pongo_base;
     ram_phys_off = kCacheableView + phys_off;
     ram_phys_size = phys_size;

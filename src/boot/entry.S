@@ -151,6 +151,9 @@ nullsub:
     ret
 
 .align 12
+
+.comm stack, 16000
+
 .globl _exception_vector_el3
 _exception_vector_el3:
     b .
@@ -170,12 +173,27 @@ _exception_vector_el3:
     b .
 .balign 128
 	ldr x25, =0x87d2e2000   // Framebuffer address
-	mov x26, #0x200000      // Count
-	ldr w27, =0xffdb134b    // Color
+	mov x26, #0x100000      // Count
+	ldr w27, =0xff9d2235    // Color
+//    1:
+//        str w27, [x25], #4
+//        subs x26, x26, #4
+//        bne 1b
+
+	adds x25, x25, #0x70000      // Skip stripe
+
+    ldr x1, =stack
+    mov sp, x1
+
+test:
+    bl barcode
+
+	mov x26, #0x100000      // Count
     1:
         str w27, [x25], #4
         subs x26, x26, #4
         bne 1b
+//////////////////////////////////////
     2:
     wfi
     b 2b                    // Loop indefinitely
@@ -198,3 +216,52 @@ _exception_vector_el3:
     b .
 .balign 128
     b .
+
+barcode:
+	ldr x25, =0x87d2e2000   // Framebuffer address
+    adds x25, x25, #0x70000      // Skip stripe
+    ldr x2, =64
+    ldr x1, =1
+
+1:
+    tst x0, x1
+    beq 2f
+
+	mov x26, #0x600*4*4      // Count
+	ldr w27, =0xff9d2235    // Color
+    4:
+        str w27, [x25], #4
+        subs x26, x26, #4
+        bne 4b
+
+2:
+    tst x0, x1
+    bne 3f
+	mov x26, #0x600*4*4      // Count
+	ldr w27, =0xff7cfc00    // Color
+    5:
+        str w27, [x25], #4
+        subs x26, x26, #4
+        bne 5b
+3:
+    ldr x26, =(1536*4)*10
+    adds x25, x25, x26
+    lsl x1, x1, #1
+    subs x2, x2, #1
+    bne 1b
+
+
+/////////////////////////// BARCODE
+
+    adds x25, x25, #0x70000      // Skip stripe
+    ldr w27, =0xff000000         // Color
+    // Try encoding 69
+    // Starts with A, ends with A
+
+    mov x0, x25
+    bl _in_c
+
+6:
+    b 6b    
+
+    ret

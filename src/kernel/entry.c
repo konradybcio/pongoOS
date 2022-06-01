@@ -274,7 +274,7 @@ __attribute__((noinline)) void pongo_entry_cached(unsigned long long buf)
     serial_teardown();
     // No [i]printf from here on out, only screen_puts
 
-    // We want this in all configs, and it must only happen once we no longer need serial
+    // // We want this in all configs, and it must only happen once we no longer need serial
     interrupt_teardown();
 
     __asm__ volatile("dsb sy");
@@ -299,6 +299,7 @@ void pongo_entry(uint64_t *kernel_args, void *entryp, void (*exit_to_el1_image)(
 	unsigned long long buf = 0;
     gBootArgs = (boot_args*)kernel_args;
     gEntryPoint = entryp;
+
     __asm__ volatile(
         // "hallo my name is trash and i like to crash"
         "msr TPIDR_EL1, xzr\n"
@@ -310,6 +311,7 @@ void pongo_entry(uint64_t *kernel_args, void *entryp, void (*exit_to_el1_image)(
     extern void set_exception_stack_core0();
     set_exception_stack_core0();
     pongo_entry_cached(buf);
+
     extern void lowlevel_set_identity(void);
     lowlevel_set_identity();
     rebase_pc(-gPongoSlide);

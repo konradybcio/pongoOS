@@ -205,7 +205,7 @@ void screen_invert() {
         }
     }
     basecolor ^= 0xffffffff;
-    cache_clean(gFramebuffer, gHeight * gRowPixels * 4);
+    //cache_clean(gFramebuffer, gHeight * gRowPixels * 4);
 }
 
 uint32_t gLogoBitmap[32] = { 0x0, 0xa00, 0x400, 0x5540, 0x7fc0, 0x3f80, 0x3f80, 0x1f00, 0x1f00, 0x1f00, 0x3f80, 0xffe0, 0x3f80, 0x3f80, 0x3f83, 0x103f9f, 0x18103ffb, 0xe3fffd5, 0x1beabfab, 0x480d7fd5, 0xf80abfab, 0x480d7fd5, 0x1beabfab, 0xe3fffd5, 0x18107ffb, 0x107fdf, 0x7fc3, 0xffe0, 0xffe0, 0xffe0, 0x1fff0, 0x1fff0 };
@@ -230,7 +230,7 @@ void screen_init() {
     map_range(0xfb0000000ULL, fbbase - fboff, fbsize, 3, 1, true);
     gFramebuffer = (uint32_t*)(0xfb0000000ULL + fboff);
     gFramebufferCopy = (uint32_t*)alloc_contig(fbsize);
-    iprintf("fbbase = %llx ", fbbase);
+    iprintf("uart0@0x%llx",  gIOBase);
     height &= 0xfff0;
     scale_factor = 2;
     if (width > 800)

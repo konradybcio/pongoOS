@@ -115,7 +115,7 @@ void stage3_exit_to_el1_image(void* boot_args, void* boot_entry_point) {
         // hypv
         *(void**)(gboot_args + 0x20) = boot_args;
         *(void**)(gboot_args + 0x28) = boot_entry_point;
-        asm("smc #0"); // elevate to EL3
+//        asm("smc #0"); // elevate to EL3
     }
     jump_to_image((uint64_t)gboot_entry_point, (uint64_t)gboot_args);
 }
