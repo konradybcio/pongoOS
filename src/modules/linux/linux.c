@@ -103,7 +103,8 @@ int linux_dtree_overlay(char *boot_args)
         width = gBootArgs->Video.v_width + 2;
     else if (!strcmp(key, "N56")  || // 6 Plus
              !strcmp(key, "N66")  || !strcmp(key, "N66m") || // 6S Plus
-             !strcmp(key, "D11")  || !strcmp(key, "D111")) // 7 Plus
+             !strcmp(key, "D11")  || !strcmp(key, "D111") || // 7 Plus
+             !strcmp(key, "D211") || !strcmp(key, "D21")) // 8 Plus
         width = gBootArgs->Video.v_width + 8;
     else if (!strcmp(key, "D22")  || !strcmp(key, "D221")) // X
         width = gBootArgs->Video.v_width + 11;
