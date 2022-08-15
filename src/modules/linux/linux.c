@@ -99,15 +99,16 @@ int linux_dtree_overlay(char *boot_args)
     if (!strcmp(key, "N61") || // 6
         !strcmp(key, "N71") || !strcmp(key, "N71m") || // 6S
         !strcmp(key, "D10") || !strcmp(key, "D101") || // 7
-        !strcmp(key, "D20") || !strcmp(key, "D201"))   // 8
+        !strcmp(key, "D20") || !strcmp(key, "D201")) // 8
         width = gBootArgs->Video.v_width + 2;
-    else if (!strcmp(key, "N56") || // 6 Plus
-             !strcmp(key, "N66") || !strcmp(key, "N66m") || // 6S Plus
-             !strcmp(key, "D11") || !strcmp(key, "D111"))   // 7 Plus
+    else if (!strcmp(key, "N56")  || // 6 Plus
+             !strcmp(key, "N66")  || !strcmp(key, "N66m") || // 6S Plus
+             !strcmp(key, "D11")  || !strcmp(key, "D111")) // 7 Plus
         width = gBootArgs->Video.v_width + 8;
-    else if (!strcmp(key, "D22") || !strcmp(key, "D221")) { // X
+    else if (!strcmp(key, "D22")  || !strcmp(key, "D221")) // X
         width = gBootArgs->Video.v_width + 11;
-    }
+    else if (!strcmp(key, "J207") || !strcmp(key, "J208")) // iPad Pro (10.5-inch)
+        width = gBootArgs->Video.v_width + 12;
     else
         width = gBootArgs->Video.v_width;
 
