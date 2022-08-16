@@ -318,6 +318,8 @@ void dump_usb_regs() {
     lock_release(&command_lock);
 }
 
+extern bool has_ecores;
+
 bool is_ecore() {
     uint64_t val;
     __asm__ volatile("mrs\t%0, MPIDR_EL1" : "=r"(val));
@@ -348,7 +350,7 @@ void fix_apple_common_ecore() {
 }
 
 void fix_apple_common() {
-    if(is_ecore()) {
+    if(is_ecore() && has_ecores) {
         fix_apple_common_ecore();
         return;
     }
