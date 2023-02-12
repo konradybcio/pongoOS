@@ -177,7 +177,7 @@ int linux_dtree_overlay(char *boot_args)
     if (gBootArgs->physBase > 0x800000000)
     {
         /* Reserve TZ/low FW regions and such */
-        node1 = fdt_add_subnode(fdt, node, "memory@800000000");
+        node1 = fdt_add_subnode(fdt, node, "/memory@800000000");
         if (node1 < 0)
         {
             iprintf("Failed to reserve TZ/FW region");
