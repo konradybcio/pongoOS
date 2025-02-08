@@ -27,6 +27,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <pongo.h>
+#include <stdarg.h>
 
 extern void task_load(struct task* to_task);
 extern void task_load_asserted(struct task* to_task);
